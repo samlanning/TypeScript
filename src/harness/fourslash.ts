@@ -929,7 +929,7 @@ namespace FourSlash {
             assert.equal(actual.isRecommended, isRecommended);
             assert.equal(actual.source, source);
 
-            if (text) {
+            if (text !== undefined) {
                 const actualDetails = this.getCompletionEntryDetails(actual.name, actual.source)!;
                 assert.equal(ts.displayPartsToString(actualDetails.displayParts), text);
                 assert.equal(ts.displayPartsToString(actualDetails.documentation), documentation || "");
