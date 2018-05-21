@@ -297,7 +297,11 @@ verify.completions({
     includes: [
         { name: "i1_p1", text: "(property) i1.i1_p1: number", documentation: "i1_p1" },
         { name: "i1_f1", text: "(method) i1.i1_f1(): void", documentation: "i1_f1" },
+<<<<<<< 63faa506e3250617c03bd1dd5509fff71ee89d61
         { name: "i1_l1", text: "(property) i1.i1_l1: () => void", documentation: "i1_l1" },
+=======
+        { name: "i1_l1", text: "(property) i1.i1_l1: () => void" },
+>>>>>>> wip
         { name: "i1_nc_p1", text: "(property) i1.i1_nc_p1: number" },
         { name: "i1_nc_f1", text: "(method) i1.i1_nc_f1(): void" },
         { name: "i1_nc_l1", text: "(property) i1.i1_nc_l1: () => void" },
