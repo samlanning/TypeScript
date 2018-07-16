@@ -4,4 +4,4 @@
 ////var y = function* gen(p) { yield /*1*/
 
 // These tentatively don't work.
-verify.completions({ marker: "1", excludes: ["p", "gen", "x"] });
+verify.completions({ marker: "1", exact: undefined });

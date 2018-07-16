@@ -15,5 +15,4 @@
 ////var _ : SomeInterface;
 ////_./**/
 
-goTo.marker();
-verify.not.completionListContains("[Symbol.hasInstance]");
+verify.completions({ marker: "", exact: ["apply", "call", "bind", "toString", "prototype", "length", "arguments", "caller"] });

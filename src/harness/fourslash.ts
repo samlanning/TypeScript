@@ -944,9 +944,8 @@ namespace FourSlash {
         }
 
         private verifyCompletionsAreExactly(actual: ReadonlyArray<ts.CompletionEntry>, expected: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntry>) {
-            if (actual.length !== expected.length) {
-                this.raiseError(`Expected ${expected.length} completions, got ${actual.length} (${actual.map(a => a.name)}).`);
-            }
+            // First pass: test that names are right. Then we'll test details.
+            assert.deepEqual(actual.map(a => a.name), expected.map(e => typeof e === "string" ? e : e.name));
 
             ts.zipWith(actual, expected, (completion, expectedCompletion, index) => {
                 const name = typeof expectedCompletion === "string" ? expectedCompletion : expectedCompletion.name;
@@ -3443,7 +3442,7 @@ Actual: ${stringify(fullActual)}`);
     function runCode(code: string, state: TestState): void {
         // Compile and execute the test
         const wrappedCode =
-            `(function(test, goTo, verify, edit, debug, format, cancellation, classification, verifyOperationIsCancelled) {
+            `(function(test, goTo, verify, edit, debug, format, cancellation, classification, completion, verifyOperationIsCancelled) {
 ${code}
 })`;
         try {
@@ -3455,7 +3454,7 @@ ${code}
             const format = new FourSlashInterface.Format(state);
             const cancellation = new FourSlashInterface.Cancellation(state);
             const f = eval(wrappedCode);
-            f(test, goTo, verify, edit, debug, format, cancellation, FourSlashInterface.Classification, verifyOperationIsCancelled);
+            f(test, goTo, verify, edit, debug, format, cancellation, FourSlashInterface.Classification, FourSlashInterface.Completion, verifyOperationIsCancelled);
         }
         catch (err) {
             throw err;
@@ -4772,6 +4771,18 @@ namespace FourSlashInterface {
             const textSpan = position === undefined ? undefined : { start: position, end: position + text.length };
             return { classificationType, text, textSpan };
         }
+    }
+    export namespace Completion {
+        const res: string[] = [];
+        for (let i = ts.SyntaxKind.FirstKeyword; i <= ts.SyntaxKind.LastKeyword; i++) {
+            if (i !== ts.SyntaxKind.UndefinedKeyword) {
+                res.push(ts.Debug.assertDefined(ts.tokenToString(i)));
+            }
+        }
+        export const keywords: ReadonlyArray<string> = res;
+
+        export const typeKeywords: ReadonlyArray<string> =
+            ["null", "void", "any", "boolean", "keyof", "never", "number", "object", "string", "symbol", "undefined", "unique", "unknown"];
     }
 
     export interface ReferenceGroup {

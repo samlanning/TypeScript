@@ -8,5 +8,5 @@
 verify.completions(
     { marker: ["0", "1"], exact: undefined },
     { marker: "2", includes: ["K", "V"], },
-    { marker: "3", excludes: ["K", "V", "K1", "V1"] },
+    { marker: "3", exact: undefined },
 );

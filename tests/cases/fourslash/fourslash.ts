@@ -649,3 +649,7 @@ declare var debug: FourSlashInterface.debug;
 declare var format: FourSlashInterface.format;
 declare var cancellation: FourSlashInterface.cancellation;
 declare var classification: typeof FourSlashInterface.classification;
+declare module completion {
+    export const keywords: ReadonlyArray<string>;
+    export const typeKeywords: ReadonlyArray<string>;
+}
