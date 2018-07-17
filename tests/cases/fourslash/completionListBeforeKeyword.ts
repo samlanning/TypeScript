@@ -16,4 +16,4 @@
 ////    export class Test3 {}
 ////}
 
-verify.completions({ marker: test.markerNames(), exact: ["C1", "C2"] });
+verify.completions({ marker: test.markers(), exact: ["C1", "C2"] });

@@ -23,4 +23,4 @@
 // @Filename: my_other_typings/module-z/index.d.ts
 //// export var z = 9;
 
-verify.completions({ marker: test.markerNames(), exact: ["module-x", "module-y", "module-z"], isNewIdentifierLocation: true })
+verify.completions({ marker: test.markers(), exact: ["module-x", "module-y", "module-z"], isNewIdentifierLocation: true })

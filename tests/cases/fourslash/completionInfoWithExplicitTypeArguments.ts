@@ -11,4 +11,4 @@
 ////declare function g<T>(x: keyof T, y: number): void;
 ////g<I>("/*g*/");
 
-verify.completions({ marker: test.markerNames(), exact: ["x", "y"] });
+verify.completions({ marker: test.markers(), exact: ["x", "y"] });

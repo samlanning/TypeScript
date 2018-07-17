@@ -20,4 +20,4 @@
 ////funcE({ /*E*/ });
 ////funcF({ /*F*/ });
 
-verify.completions({ marker: test.markerNames(), exact: ["hello", "world"] });
+verify.completions({ marker: test.markers(), exact: ["hello", "world"] });

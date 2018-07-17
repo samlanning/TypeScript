@@ -32,7 +32,7 @@
 ////
 
 verify.completions({
-    marker: test.markerNames(),
+    marker: test.markers(),
     exact: ["f1", "f2", "f3", "f4", "f5", "f6", "g1", "g2"],
     isNewIdentifierLocation: true,
 });

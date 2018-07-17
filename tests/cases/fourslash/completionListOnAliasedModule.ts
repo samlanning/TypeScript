@@ -9,4 +9,4 @@
 ////import p = M.N;
 ////p./**/
 
-verify.completions({ marker: "", exact: "foo", excludes: "bar" });
+verify.completions({ marker: "", exact: "foo" });

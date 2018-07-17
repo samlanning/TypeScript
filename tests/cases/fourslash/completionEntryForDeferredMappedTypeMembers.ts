@@ -9,4 +9,4 @@
 //// out.a./*2*/a
 //// out.a.a./*3*/a
 
-verify.completions({ marker: test.markerNames(), exact: "a" });
+verify.completions({ marker: test.markers(), exact: "a" });
