@@ -5,22 +5,9 @@
 ////class \u0041 { /*2*/ }
 /////*3*/
 
-goTo.marker("0");
-verify.completionListContains("B");
-verify.completionListContains("\u0042");
-
-goTo.marker("2");
-verify.not.completionListContains("C");
-verify.not.completionListContains("\u0043");
-
-goTo.marker("2");
-verify.not.completionListContains("A");
-verify.not.completionListContains("\u0041");
-
-goTo.marker("3");
-verify.completionListContains("B");
-verify.completionListContains("\u0042");
-verify.completionListContains("A");
-verify.completionListContains("\u0041");
-verify.completionListContains("C");
-verify.completionListContains("\u0043");
+verify.completions(
+    { marker: "0", includes: ["B", "\u0042"] },
+    { marker: "1", excludes: ["C", "\u0043"] },
+    { marker: "2", excludes: ["A", "\u0041"] },
+    { marker: "3", includes: ["B", "\u0042", "A", "\u0041", "C", "\u0043"] },
+);
