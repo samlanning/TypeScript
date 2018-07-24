@@ -17,4 +17,7 @@
 //// Person.getName = 10;
 //// Person.getNa/**/ = 10;
 
-verify.completions({ marker: "", exact: ["name", "age", "getName"] });
+verify.completions({
+    marker: "",
+    exact: ["getName", "getNa", "apply", "call", "bind", "toString", "prototype", "length", "arguments", "caller", "Person", "name", "age"],
+});

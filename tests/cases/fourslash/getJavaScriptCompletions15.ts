@@ -22,6 +22,6 @@
 verify.completions(
     { marker: "1", includes: "toExponential" },
     { marker: "2", includes: "toLowerCase" },
-    { marker: "3", exact: "V" },
+    { marker: "3", exact: ["V", "ref1", "ref2", "require", "v", "x"] },
     { marker: "4", includes: "toLowerCase" },
 );
