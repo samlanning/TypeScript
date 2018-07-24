@@ -19,5 +19,4 @@
 //// var SFCComp = SFC1 || SFC2;
 //// <SFCComp /**/ />
 
-goTo.marker();
-verify.completionListContains("x", "(property) x: number | boolean");
+verify.completions({ marker: "", includes: { name: "x", text: "(property) x: number | boolean" } });
