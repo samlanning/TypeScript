@@ -7,8 +7,7 @@
 ////}
 ////Foo./**/
 
-goTo.marker("");
-verify.completionListContains("x");
+verify.completions({ marker: "", includes: "x" });
 
 // Make an edit
 edit.insert("a");

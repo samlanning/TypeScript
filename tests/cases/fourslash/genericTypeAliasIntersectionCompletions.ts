@@ -28,6 +28,4 @@
 //// var obj = new (merge(LeftSideNode, RightSideNode))();
 //// obj./**/
 
-goTo.marker();
-verify.completionListContains("left");
-verify.completionListContains("right");
+verify.completions({ marker: "", exact: ["left", "right"] });
