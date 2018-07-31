@@ -30,7 +30,6 @@
 ////    }
 ////}
 
-
 // Same class, everything is visible
 goTo.marker("1");
 verify.not.completionListContains('privateMethod');
