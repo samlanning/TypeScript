@@ -8,4 +8,4 @@
 ////            export function baz() { }
 ////}
 
-verify.completions({ marker: "", exact: { name: "baz", text: " function B.baz(): void" } });
+verify.completions({ marker: "", exact: { name: "baz", text: "function B.baz(): void" } });

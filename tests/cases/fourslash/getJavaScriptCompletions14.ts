@@ -9,4 +9,4 @@
 ////var x = 1;
 ////x./*1*/
 
-verify.completions({ marker: "1", includes: { name: "toExponential", text: "method" } });
+verify.completions({ marker: "1", includes: { name: "toExponential", kind: "method" } });
