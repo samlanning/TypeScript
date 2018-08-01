@@ -539,7 +539,8 @@ declare namespace FourSlashInterface {
         readonly preferences?: UserPreferences;
         readonly triggerCharacter?: string;
     }
-    type ExpectedCompletionEntry = string | {
+    type ExpectedCompletionEntry = string | ExpectedCompletionEntryObject;
+    interface ExpectedCompletionEntryObject {
         readonly name: string,
         readonly source?: string,
         readonly insertText?: string,
@@ -552,7 +553,7 @@ declare namespace FourSlashInterface {
         readonly text?: string,
         readonly documentation?: string,
         readonly sourceDisplay?: string,
-    };
+    }
 
     interface VerifySignatureHelpOptions {
         marker?: ArrayOrSingle<string>;
@@ -649,7 +650,8 @@ declare var debug: FourSlashInterface.debug;
 declare var format: FourSlashInterface.format;
 declare var cancellation: FourSlashInterface.cancellation;
 declare var classification: typeof FourSlashInterface.classification;
-declare module completion {
+declare namespace completion {
     export const keywords: ReadonlyArray<string>;
     export const typeKeywords: ReadonlyArray<string>;
+    export const classElementKeywords: ReadonlyArray<string>;
 }

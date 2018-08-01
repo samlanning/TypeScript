@@ -465,12 +465,6 @@ verify.quickInfoAt("42aq", "(parameter) c: number", "it is third parameter");
 verify.signatureHelp({ marker: "43", docComment: jsdocTestDocComment, tags: jsdocTestTags });
 verify.quickInfoAt("43aq", "(parameter) d: number");
 
-<<<<<<< 5b98de9082a6f5cd8a8227b3490e194b96d85e6e
-goTo.marker('44');
-verify.completionListContains("jsDocParamTest", "function jsDocParamTest(a: number, b: number, c: number, d: number): number", jsdocTestDocComment);
-verify.completionListContains("x", "var x: any", "This is a comment");
-verify.completionListContains("y", "var y: any", "This is a comment");
-=======
 verify.completions({
     marker: "44",
     includes: [
@@ -479,7 +473,6 @@ verify.completions({
         { name: "y", text: "var y: any", documentation: "This is a comment" },
     ],
 });
->>>>>>> wip
 
 verify.signatureHelp({ marker: "45", docComment: "This is function comment\nAnd properly aligned comment" });
 verify.quickInfoAt("45q", "function jsDocCommentAlignmentTest1(): void", "This is function comment\nAnd properly aligned comment");

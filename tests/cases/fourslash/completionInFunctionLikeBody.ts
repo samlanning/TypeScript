@@ -13,10 +13,11 @@
 ////     /*4*/
 //// }
 
-verify.completions({
-    marker: ["1", "2"],
-    includes: "async",
-    excludes: ["public", "private", "protected", "constructor", "readonly", "static", "abstract", "get", "set"],
-});
-
-goTo.eachMarker(["3", "4"], () => verify.completionListContainsClassElementKeywords());
+verify.completions(
+    {
+        marker: ["1", "2"],
+        includes: "async",
+        excludes: ["public", "private", "protected", "constructor", "readonly", "static", "abstract", "get", "set"],
+    },
+    { marker: ["3", "4"], exact: completion.classElementKeywords, isNewIdentifierLocation: true },
+);
