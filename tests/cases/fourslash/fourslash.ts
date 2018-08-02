@@ -540,18 +540,19 @@ declare namespace FourSlashInterface {
     }
     type ExpectedCompletionEntry = string | ExpectedCompletionEntryObject;
     interface ExpectedCompletionEntryObject {
-        readonly name: string,
-        readonly source?: string,
-        readonly insertText?: string,
-        readonly replacementSpan?: Range,
-        readonly hasAction?: boolean,
-        readonly isRecommended?: boolean,
-        readonly kind?: string,
+        readonly name: string;
+        readonly source?: string;
+        readonly insertText?: string;
+        readonly replacementSpan?: Range;
+        readonly hasAction?: boolean;
+        readonly isRecommended?: boolean;
+        readonly kind?: string;
+        readonly kindModifiers?: string;
 
         // details
-        readonly text?: string,
-        readonly documentation?: string,
-        readonly sourceDisplay?: string,
+        readonly text?: string;
+        readonly documentation?: string;
+        readonly sourceDisplay?: string;
     }
 
     interface VerifySignatureHelpOptions {

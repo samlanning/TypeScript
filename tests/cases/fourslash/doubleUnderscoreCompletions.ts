@@ -8,4 +8,11 @@
 //// var instance = new MyObject();
 //// instance./*1*/
 
-verify.completions({ marker: "1", exact: { name: "__property", text: "(property) MyObject.__property: number" } });
+verify.completions({
+    marker: "1",
+    exact: [
+        { name: "__property", text: "(property) MyObject.__property: number" },
+        "MyObject",
+        "instance",
+    ],
+});
