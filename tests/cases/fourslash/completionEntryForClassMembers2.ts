@@ -188,174 +188,148 @@
 ////    static /*extendsB0AndImplementsI6ThatExtendsB0AndHasStaticMethodOfB0TypesStatic*/
 ////}
 
-const allowedKeywordCount = verify.allowedClassElementKeywords.length;
-type CompletionInfo = [string, string];
-type CompletionInfoVerifier = { validMembers: CompletionInfo[], invalidMembers: CompletionInfo[] };
+type CompletionInfo = { name: string, text: string };
+type CompletionInfoVerifier = { validMembers: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObject> };
 
-function verifyClassElementLocations({ validMembers, invalidMembers }: CompletionInfoVerifier, classElementCompletionLocations: string[]) {
-    for (const marker of classElementCompletionLocations) {
-        goTo.marker(marker);
-        verifyCompletionInfo(validMembers, verify);
-        verifyCompletionInfo(invalidMembers, verify.not);
-        verify.completionListContainsClassElementKeywords();
-        verify.completionListCount(allowedKeywordCount + validMembers.length);
-    }
+function verifyClassElementLocations({ validMembers }: CompletionInfoVerifier, classElementCompletionLocations: string[]) {
+    verify.completions({
+        marker: classElementCompletionLocations,
+        exact: [...validMembers.map(m => ({ ...m, kind: "method" })), ...completion.classElementKeywords],
+        //excludes: invalidMembers.map(m => m.name),
+        isNewIdentifierLocation: true,
+    });
 }
 
-function verifyCompletionInfo(memberInfo: CompletionInfo[], verify: FourSlashInterface.verifyNegatable) {
-    for (const [symbol, text] of memberInfo) {
-        verify.completionListContains(symbol, text, /*documentation*/ undefined, "method");
-    }
-}
+const validInstanceMembersOfBaseClassB: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObject> = [
+    { name: "protectedMethod", text: "(method) B.protectedMethod(): void" },
+    { name: "getValue", text: "(method) B.getValue(): string | boolean" },
+];
+const validStaticMembersOfBaseClassB: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObject> = [
+    { name: "staticMethod", text: "(method) B.staticMethod(): void" },
+];
+const privateMembersOfBaseClassB: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObject> = [
+    { name: "privateMethod", text: "(method) B.privateMethod(): void" },
+];
+const protectedPropertiesOfBaseClassB0: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObject> = [
+    { name: "protectedMethod", text: "(method) B0.protectedMethod(): void" },
+    { name: "protectedMethod1", text: "(method) B0.protectedMethod1(): void" },
+];
+const publicPropertiesOfBaseClassB0: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObject> = [
+    { name: "getValue", text: "(method) B0.getValue(): string | boolean" },
+    { name: "getValue1", text: "(method) B0.getValue1(): string | boolean" },
+];
+const validInstanceMembersOfBaseClassB0: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObject> = protectedPropertiesOfBaseClassB0.concat(publicPropertiesOfBaseClassB0);
+//TODO:NEATER
+const validInstanceMembersOfBaseClassB0_2 : ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObject> = [
+    protectedPropertiesOfBaseClassB0[0],
+    publicPropertiesOfBaseClassB0[0],
+    protectedPropertiesOfBaseClassB0[1],
+    publicPropertiesOfBaseClassB0[1],
+];
 
-const validInstanceMembersOfBaseClassB: CompletionInfo[] = [
-    ["getValue", "(method) B.getValue(): string | boolean"],
-    ["protectedMethod", "(method) B.protectedMethod(): void"],
-];
-const validStaticMembersOfBaseClassB: CompletionInfo[] = [
-    ["staticMethod", "(method) B.staticMethod(): void"]
-];
-const privateMembersOfBaseClassB: CompletionInfo[] = [
-    ["privateMethod", "(method) B.privateMethod(): void"],
-];
-const protectedPropertiesOfBaseClassB0: CompletionInfo[] = [
-    ["protectedMethod", "(method) B0.protectedMethod(): void"],
-    ["protectedMethod1", "(method) B0.protectedMethod1(): void"],
-];
-const publicPropertiesOfBaseClassB0: CompletionInfo[] = [
-    ["getValue", "(method) B0.getValue(): string | boolean"],
-    ["getValue1", "(method) B0.getValue1(): string | boolean"],
-];
-const validInstanceMembersOfBaseClassB0: CompletionInfo[] = protectedPropertiesOfBaseClassB0.concat(publicPropertiesOfBaseClassB0);
-const validStaticMembersOfBaseClassB0: CompletionInfo[] = [
-    ["staticMethod", "(method) B0.staticMethod(): void"],
-    ["staticMethod1", "(method) B0.staticMethod1(): void"]
-];
-const privateMembersOfBaseClassB0: CompletionInfo[] = [
-    ["privateMethod", "(method) B0.privateMethod(): void"],
-    ["privateMethod1", "(method) B0.privateMethod1(): void"],
-];
-const membersOfI: CompletionInfo[] = [
-    ["methodOfInterface", "(method) I.methodOfInterface(): number"],
-];
-const membersOfI2: CompletionInfo[] = [
-    ["methodOfInterface2", "(method) I2.methodOfInterface2(): number"],
-];
-const membersOfI3: CompletionInfo[] = [
-    ["getValue", "(method) I3.getValue(): string"],
-    ["method", "(method) I3.method(): string"],
-];
-const membersOfI4: CompletionInfo[] = [
-    ["staticMethod", "(method) I4.staticMethod(): void"],
-    ["method", "(method) I4.method(): string"],
-];
-const membersOfI5: CompletionInfo[] = publicPropertiesOfBaseClassB0.concat([
-    ["methodOfInterface5", "(method) I5.methodOfInterface5(): number"]
-]);
-const membersOfI6: CompletionInfo[] = publicPropertiesOfBaseClassB0.concat([
-    ["staticMethod", "(method) I6.staticMethod(): void"],
-    ["methodOfInterface6", "(method) I6.methodOfInterface6(): number"]
-]);
-const membersOfI7: CompletionInfo[] = membersOfI.concat([
-    ["methodOfInterface7", "(method) I7.methodOfInterface7(): number"]
-]);
 
-function getCompletionInfoVerifier(
-    validMembers: CompletionInfo[],
-    invalidMembers: CompletionInfo[],
-    arrayToDistribute: CompletionInfo[],
-    isValidDistributionCriteria: (v: CompletionInfo) => boolean): CompletionInfoVerifier {
-    if (arrayToDistribute) {
-        validMembers = validMembers.concat(arrayToDistribute.filter(isValidDistributionCriteria));
-        invalidMembers = invalidMembers.concat(arrayToDistribute.filter(v => !isValidDistributionCriteria(v)));
-    }
-    return {
-        validMembers,
-        invalidMembers
-    }
-}
+const validStaticMembersOfBaseClassB0: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObject> = [
+    { name: "staticMethod", text: "(method) B0.staticMethod(): void" },
+    { name: "staticMethod1", text: "(method) B0.staticMethod1(): void" },
+];
+const privateMembersOfBaseClassB0: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObject> = [
+    { name: "privateMethod", text: "(method) B0.privateMethod(): void" },
+    { name: "privateMethod1", text: "(method) B0.privateMethod1(): void" },
+];
+const membersOfI: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObject> = [
+    { name: "methodOfInterface", text: "(method) I.methodOfInterface(): number" },
+];
+const membersOfI2: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObject> = [
+    { name: "methodOfInterface2", text: "(method) I2.methodOfInterface2(): number" },
+];
+const membersOfI3: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObject> = [
+    { name: "getValue", text: "(method) I3.getValue(): string" },
+    { name: "method", text: "(method) I3.method(): string" },
+];
+const membersOfI4: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObject> = [
+    { name: "staticMethod", text: "(method) I4.staticMethod(): void" },
+    { name: "method", text: "(method) I4.method(): string" },
+];
+const membersOfI5: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObject> = publicPropertiesOfBaseClassB0.concat([
+    { name: "methodOfInterface5", text: "(method) I5.methodOfInterface5(): number" },
+]);
+//TODO:NEATER
+const membersOfJustI5: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObject> = [
+    { name: "methodOfInterface5", text: "(method) I5.methodOfInterface5(): number" },
+];
+const membersOfI6: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObject> = publicPropertiesOfBaseClassB0.concat([
+    { name: "staticMethod", text: "(method) I6.staticMethod(): void" },
+    { name: "methodOfInterface6", text: "(method) I6.methodOfInterface6(): number" },
+]);
+const membersOfI7: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObject> = [
+    { name: "methodOfInterface7", text: "(method) I7.methodOfInterface7(): number" },
+    ...membersOfI,
+];
+//TODO:NEATER
+const membersOfI7_2: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObject> = [
+    ...membersOfI,
+    { name: "methodOfInterface7", text: "(method) I7.methodOfInterface7(): number" },
+];
 
-const noMembers: CompletionInfo[] = [];
-const membersOfIAndI2 = membersOfI.concat(membersOfI2);
+const noMembers: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObject> = [];
+const membersOfIAndI2 = [...membersOfI, ...membersOfI2];
 const invalidMembersOfBAtInstanceLocation = privateMembersOfBaseClassB.concat(validStaticMembersOfBaseClassB);
 
-// members of I and I2
-verifyClassElementLocations({ validMembers: membersOfIAndI2, invalidMembers: noMembers }, [
-    "implementsIAndI2",
-    "implementsIAndI2AndWritingMethodNameOfI"
+//TODO:NAME
+interface I {
+    readonly marker: string | ReadonlyArray<string>;
+    readonly exact: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObject>;
+}
+function f(is: ReadonlyArray<I>) {
+    for (const i of is) {
+        verify.completions({
+            marker: i.marker,
+            exact: [...i.exact.map(m => ({ ...m, kind: "method" })), ...completion.classElementKeywords],
+            isNewIdentifierLocation: true,
+        })
+    }
+}
+
+const allInstanceBAndIAndI2 = [...validInstanceMembersOfBaseClassB, ...membersOfIAndI2];
+
+f([
+    // members of I and I2
+    { marker: ["implementsIAndI2", "implementsIAndI2AndWritingMethodNameOfI"], exact: membersOfIAndI2 },
+    // Static location so no members of I and I2
+    { marker: "implementsIAndI2AndWritingStatic", exact: [] },
+    // members of instance B, I and I2
+    { marker: "extendsBAndImplementsIAndI2", exact: allInstanceBAndIAndI2 },
+    // static location so only static members of B and no members of instance B, I and I2
+    {
+        marker: [
+            "extendsBAndImplementsIAndI2AndWritingStatic",
+            "extendsBAndImplementsIAndI2WithMethodFromBAndIAndTypesStatic"
+        ],
+        exact: validStaticMembersOfBaseClassB,
+    },
+    // instance members of B without protectedMethod, I and I2
+    { marker: "extendsBAndImplementsIAndI2WithMethodFromB",exact: [validInstanceMembersOfBaseClassB[1], ...membersOfIAndI2] }, //TODO:NEATER
+    // instance members of B, members of T without methodOfInterface and I2
+    { marker: "extendsBAndImplementsIAndI2WithMethodFromI", exact: [...validInstanceMembersOfBaseClassB, ...membersOfI2] },
+    // instance members of B without protectedMethod, members of T without methodOfInterface and I2
+    { marker: "extendsBAndImplementsIAndI2WithMethodFromBAndI", exact: [validInstanceMembersOfBaseClassB[1], ...membersOfI2] },
 ]);
 
-// Static location so no members of I and I2
-verifyClassElementLocations({ validMembers: noMembers, invalidMembers: membersOfIAndI2 },
-    ["implementsIAndI2AndWritingStatic"]);
-
-const allInstanceBAndIAndI2 = membersOfIAndI2.concat(validInstanceMembersOfBaseClassB);
-// members of instance B, I and I2
-verifyClassElementLocations({
-    validMembers: allInstanceBAndIAndI2,
-    invalidMembers: invalidMembersOfBAtInstanceLocation
-}, ["extendsBAndImplementsIAndI2"]);
-
-// static location so only static members of B and no members of instance B, I and I2
-verifyClassElementLocations({
-    validMembers: validStaticMembersOfBaseClassB,
-    invalidMembers: privateMembersOfBaseClassB.concat(allInstanceBAndIAndI2)
-}, [
-        "extendsBAndImplementsIAndI2AndWritingStatic",
-        "extendsBAndImplementsIAndI2WithMethodFromBAndIAndTypesStatic"
-    ]);
-
-// instance members of B without protectedMethod, I and I2
-verifyClassElementLocations(
-    getCompletionInfoVerifier(
-        /*validMembers*/ membersOfIAndI2,
-        /*invalidMembers*/ invalidMembersOfBAtInstanceLocation,
-        /*arrayToDistribute*/ validInstanceMembersOfBaseClassB,
-        value => value[0] !== "protectedMethod"),
-    ["extendsBAndImplementsIAndI2WithMethodFromB"]);
-
-// instance members of B, members of T without methodOfInterface and I2
-verifyClassElementLocations(
-    getCompletionInfoVerifier(
-        /*validMembers*/ membersOfI2.concat(validInstanceMembersOfBaseClassB),
-        /*invalidMembers*/ invalidMembersOfBAtInstanceLocation,
-        /*arrayToDistribute*/ membersOfI,
-        value => value[0] !== "methodOfInterface"),
-    ["extendsBAndImplementsIAndI2WithMethodFromI"]);
-
-// instance members of B without protectedMethod, members of T without methodOfInterface and I2
-verifyClassElementLocations(
-    getCompletionInfoVerifier(
-        /*validMembers*/ membersOfI2,
-        /*invalidMembers*/ invalidMembersOfBAtInstanceLocation,
-        /*arrayToDistribute*/ membersOfI.concat(validInstanceMembersOfBaseClassB),
-        value => value[0] !== "methodOfInterface" && value[0] !== "protectedMethod"),
-    ["extendsBAndImplementsIAndI2WithMethodFromBAndI"]);
+TODO: CONVERT REST TOO
 
 // members of B and members of I3 that are not same as name of method in B
-verifyClassElementLocations(
-    getCompletionInfoVerifier(
-        /*validMembers*/ validInstanceMembersOfBaseClassB,
-        /*invalidMembers*/ invalidMembersOfBAtInstanceLocation,
-        /*arrayToDistribute*/ membersOfI3,
-        value => value[0] !== "getValue"),
+verifyClassElementLocations({ validMembers: [...validInstanceMembersOfBaseClassB, membersOfI3[1]] }, //TODO:NEATER
     ["extendsBAndImplementsI3WithSameNameMembers"]);
 
 // members of B (without getValue since its implemented) and members of I3 that are not same as name of method in B
-verifyClassElementLocations(
-    getCompletionInfoVerifier(
-        /*validMembers*/ noMembers,
-        /*invalidMembers*/ invalidMembersOfBAtInstanceLocation,
-        /*arrayToDistribute*/ membersOfI3.concat(validInstanceMembersOfBaseClassB),
-        value => value[0] !== "getValue"),
+verifyClassElementLocations({ validMembers: [validInstanceMembersOfBaseClassB[0], membersOfI3[1], ] }, //TODO:NEATER
     ["extendsBAndImplementsI3WithSameNameMembersAndHasImplementedTheMember"]);
 
 const invalidMembersOfB0AtInstanceSide = privateMembersOfBaseClassB0.concat(validStaticMembersOfBaseClassB0);
 const invalidMembersOfB0AtStaticSide = privateMembersOfBaseClassB0.concat(validInstanceMembersOfBaseClassB0);
 // members of B0 and members of I4
 verifyClassElementLocations({
-    validMembers: validInstanceMembersOfBaseClassB0.concat(membersOfI4),
-    invalidMembers: invalidMembersOfB0AtInstanceSide
+    validMembers: [...validInstanceMembersOfBaseClassB0_2, ...membersOfI4],
 }, [
         "extendsB0ThatExtendsAndImplementsI4WithStaticMethod",
         "extendsB0ThatExtendsAndImplementsI4WithStaticMethodAndImplementedAnotherMethod",
@@ -363,13 +337,8 @@ verifyClassElementLocations({
     ]);
 
 // members of B0 and members of I4 that are not staticMethod
-verifyClassElementLocations(
-    getCompletionInfoVerifier(
-        /*validMembers*/ validInstanceMembersOfBaseClassB0,
-        /*invalidMembers*/ invalidMembersOfB0AtInstanceSide,
-        /*arrayToDistribute*/ membersOfI4,
-        value => value[0] !== "staticMethod"
-    ), [
+verifyClassElementLocations({ validMembers: [...validInstanceMembersOfBaseClassB0_2, membersOfI4[1]] }, //TODO:NEATER
+    [
         "extendsB0ThatExtendsAndImplementsI4WithStaticMethodAndImplementedThatMethod",
         "extendsB0ThatExtendsAndImplementsI4WithStaticMethodAndImplementedThatMethodAsBoth"
     ]);
@@ -377,7 +346,6 @@ verifyClassElementLocations(
 // static members of B0
 verifyClassElementLocations({
     validMembers: validStaticMembersOfBaseClassB0,
-    invalidMembers: invalidMembersOfB0AtStaticSide.concat(membersOfI4)
 }, [
         "extendsB0ThatExtendsAndImplementsI4WithStaticMethodWritingStatic",
         "extendsB0ThatExtendsAndImplementsI4WithStaticMethodAndImplementedAnotherMethodWritingStatic",
@@ -386,61 +354,75 @@ verifyClassElementLocations({
 
 // static members of B0 without staticMethod
 verifyClassElementLocations(
-    getCompletionInfoVerifier(
-        /*validMembers*/ noMembers,
-        /*invalidMembers*/  invalidMembersOfB0AtStaticSide.concat(membersOfI4),
-        /*arrayToDistribute*/ validStaticMembersOfBaseClassB0,
-        value => value[0] !== "staticMethod"
-    ), [
+    { validMembers: [validStaticMembersOfBaseClassB0[1]] }, [
         "extendsB0ThatExtendsAndImplementsI4WithStaticMethodAndImplementedThatMethodAsStaticWritingStatic",
         "extendsB0ThatExtendsAndImplementsI4WithStaticMethodAndImplementedThatMethodAsBothWritingStatic"
     ]);
 
 // members of I7 extends I
-verifyClassElementLocations({ validMembers: membersOfI7, invalidMembers: noMembers }, [
+verifyClassElementLocations({ validMembers: membersOfI7 }, [
     "implementsI7whichExtendsI",
     "implementsI7whichExtendsIAndAlsoImplementsI",
-    "implementsIAndAlsoImplementsI7whichExtendsI"
 ]);
+verifyClassElementLocations({ validMembers: membersOfI7_2 }, ["implementsIAndAlsoImplementsI7whichExtendsI"])
 
 const invalidMembersOfB0AtInstanceSideFromInterfaceExtendingB0 = invalidMembersOfB0AtInstanceSide;
 // members of I5 extends B0
 verifyClassElementLocations({
-    validMembers: membersOfI5.concat(protectedPropertiesOfBaseClassB0),
-    invalidMembers: invalidMembersOfB0AtInstanceSideFromInterfaceExtendingB0
+    validMembers: [...membersOfJustI5, protectedPropertiesOfBaseClassB0[0], publicPropertiesOfBaseClassB0[0], protectedPropertiesOfBaseClassB0[1], publicPropertiesOfBaseClassB0[1]], //TODO:NEATER
 }, [
         "implementsI5ThatExtendsB0",
     ]);
 
 // members of I6 extends B0
 verifyClassElementLocations({
-    validMembers: membersOfI6.concat(protectedPropertiesOfBaseClassB0),
-    invalidMembers: invalidMembersOfB0AtInstanceSideFromInterfaceExtendingB0
+    //validMembers: [...membersOfI6, ...protectedPropertiesOfBaseClassB0],
+    //TODO:NEATER
+    validMembers: [
+        membersOfI6[3],
+        membersOfI6[2],
+        protectedPropertiesOfBaseClassB0[0],
+        membersOfI6[0],
+        protectedPropertiesOfBaseClassB0[1],
+        membersOfI6[1],
+    ],
 }, [
         "implementsI6ThatExtendsB0AndHasStaticMethodOfB0",
     ]);
 
 // members of B0 and I5 that extends B0
 verifyClassElementLocations({
-    validMembers: membersOfI5.concat(protectedPropertiesOfBaseClassB0),
-    invalidMembers: invalidMembersOfB0AtInstanceSide
+    //TODO:NEATER
+    //validMembers: [...membersOfI5, ...protectedPropertiesOfBaseClassB0],
+    validMembers: [
+        protectedPropertiesOfBaseClassB0[0],
+        membersOfI5[0],
+        protectedPropertiesOfBaseClassB0[1],
+        membersOfI5[1],
+        membersOfI5[2],
+    ],
 }, [
         "extendsB0AndImplementsI5ThatExtendsB0"
     ]);
 
 // members of B0 and I6 that extends B0
 verifyClassElementLocations({
-    validMembers: membersOfI6.concat(protectedPropertiesOfBaseClassB0),
-    invalidMembers: invalidMembersOfB0AtInstanceSide
+    //validMembers: [...membersOfI6, ...protectedPropertiesOfBaseClassB0],
+    // TODO:NEATER
+    validMembers: [
+        protectedPropertiesOfBaseClassB0[0],
+        membersOfI6[0],
+        protectedPropertiesOfBaseClassB0[1],
+        membersOfI6[1],
+        membersOfI6[3],
+        membersOfI6[2],
+    ],
 }, [
         "extendsB0AndImplementsI6ThatExtendsB0AndHasStaticMethodOfB0"
     ]);
 
 // nothing on static side as these do not extend any other class
-verifyClassElementLocations({
-    validMembers: [],
-    invalidMembers: membersOfI5.concat(membersOfI6, invalidMembersOfB0AtStaticSide)
-}, [
+verifyClassElementLocations({ validMembers: [] }, [
         "implementsI5ThatExtendsB0TypesStatic",
         "implementsI6ThatExtendsB0AndHasStaticMethodOfB0TypesStatic"
     ]);
@@ -448,7 +430,6 @@ verifyClassElementLocations({
 // statics of base B but nothing from instance side
 verifyClassElementLocations({
     validMembers: validStaticMembersOfBaseClassB0,
-    invalidMembers: membersOfI5.concat(membersOfI6, invalidMembersOfB0AtStaticSide)
 }, [
         "extendsB0AndImplementsI5ThatExtendsB0TypesStatic",
         "extendsB0AndImplementsI6ThatExtendsB0AndHasStaticMethodOfB0TypesStatic"

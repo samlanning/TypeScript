@@ -164,7 +164,6 @@ declare namespace FourSlashInterface {
         ): void;
         completionListItemsCountIsGreaterThan(count: number): void;
         completionListIsEmpty(): void;
-        completionListContainsClassElementKeywords(): void;
         completionListContainsConstructorParameterKeywords(): void;
         completionListAllowsNewIdentifier(): void;
         errorExistsBetweenMarkers(startMarker: string, endMarker: string): void;
