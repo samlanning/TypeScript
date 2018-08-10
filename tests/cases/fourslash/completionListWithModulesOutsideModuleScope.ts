@@ -258,6 +258,22 @@ function goToMarkAndGeneralVerify(marker: string)
     verify.not.completionListContains('mod1eexvar');
 }
 
+/*TODOconst commonExcludes = ["mod1var", "mod1fn", "mod1cls", "mod1int", "mod1mod", "mod1evar", "mod1efn", "mod1ecls", "mod1eint", "mod1emod", "mod1eexvar"];
+verify.completions(
+    {
+        marker: "global",
+        includes: [
+            { name: "mod1", text: "namespace mod1" },
+            { name: "mod2", text: "namespace mod2" },
+            { name: "mod3", text: "namespace mod3" },
+            { name: "shwvar", text: "var shwvar: number" },
+            { name: "shwfn", text: "function shwfn(): void" },
+            { name: "shwcls", text: "class shwcls" },
+        ],
+        excludes: commonExcludes,
+    },
+);*/
+
 // from global scope
 goToMarkAndGeneralVerify('global');
 verify.completionListContains('mod1', 'namespace mod1');
