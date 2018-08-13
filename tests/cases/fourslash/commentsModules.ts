@@ -98,30 +98,43 @@
 
 verify.quickInfoAt("1", "namespace m1", "Namespace comment");
 
-goTo.marker('2');
-verify.completionListContains("b", "var b: number", "b's comment");
-verify.completionListContains("foo", "function foo(): number", "foo's comment");
+verify.completions({
+    marker: "2",
+    includes: [
+        { name: "b", text: "var b: number", documentation: "b's comment" },
+        { name: "foo", text: "function foo(): number", documentation: "foo's comment" },
+    ],
+});
 
 verify.signatureHelp({ marker: "3", docComment: "foo's comment" });
 verify.quickInfoAt("3q", "function foo(): number", "foo's comment");
 
-goTo.marker('4');
-verify.completionListContains("m1", "namespace m1", "Namespace comment");
+verify.completions(
+    { marker: "4", includes: { name: "m1", text: "namespace m1", documentation: "Namespace comment" } },
+    {
+        marker: "5",
+        includes: [
+            { name: "b", text: "var m1.b: number", documentation: "b's comment" },
+            { name: "fooExport", text: "function m1.fooExport(): number", documentation: "exported function" },
+            { name: "m2", text: "namespace m1.m2", documentation: "m2 comments" },
+        ],
+    },
+);
 
-goTo.marker('5');
-verify.completionListContains("b", "var m1.b: number", "b's comment");
-verify.completionListContains("fooExport", "function m1.fooExport(): number", "exported function");
-verify.completionListContains("m2", "namespace m1.m2");
-verify.quickInfoIs("function m1.fooExport(): number", "exported function");
+verify.quickInfoAt("5", "function m1.fooExport(): number", "exported function");
 
 verify.signatureHelp({ marker: "6", docComment: "exported function" });
 
 verify.quickInfoAt("7", "var myvar: m1.m2.c");
 
-goTo.marker('8');
-verify.quickInfoIs("constructor m1.m2.c(): m1.m2.c", "class comment;");
-verify.completionListContains("c", "constructor m1.m2.c(): m1.m2.c", "class comment;");
-verify.completionListContains("i", "var m1.m2.i: m1.m2.c", "i");
+verify.quickInfoAt("8", "constructor m1.m2.c(): m1.m2.c", "class comment;");
+verify.completions({
+    marker: "8",
+    includes: [
+        { name: "c", text: "constructor m1.m2.c(): m1.m2.c", documentation: "class comment;" },
+        { name: "i", text: "var m1.m2.i: m1.m2.c", documentation: "i" },
+    ],
+});
 
 goTo.marker('9');
 verify.completionListContains("m2", "namespace m2", "namespace comment of m2.m3");
