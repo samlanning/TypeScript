@@ -164,7 +164,6 @@ declare namespace FourSlashInterface {
         ): void;
         completionListItemsCountIsGreaterThan(count: number): void;
         completionListIsEmpty(): void;
-        completionListContainsConstructorParameterKeywords(): void;
         completionListAllowsNewIdentifier(): void;
         errorExistsBetweenMarkers(startMarker: string, endMarker: string): void;
         errorExistsAfterMarker(markerName?: string): void;
@@ -654,4 +653,5 @@ declare namespace completion {
     export const keywords: ReadonlyArray<string>;
     export const typeKeywords: ReadonlyArray<string>;
     export const classElementKeywords: ReadonlyArray<string>;
+    export const constructorParameterKeywords: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntry>;
 }
