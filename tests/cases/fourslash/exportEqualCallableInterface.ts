@@ -15,5 +15,5 @@
 
 verify.completions({
     marker: "",
-    exact: ["foo", "apply", "call", "bind", "toString", "prototype", "length", "arguments", "caller"],
+    exact: ["foo", ...completion.functionMembersWithPrototype],
 });

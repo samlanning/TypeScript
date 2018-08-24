@@ -54,6 +54,6 @@
 verify.completions(
     { marker: "objectMembers", exact: ["constructor", "toString", "toLocaleString", "valueOf", "hasOwnProperty", "isPrototypeOf", "propertyIsEnumerable"] },
     { marker: "interfaceMembers", exact: ["bar21", "bar22", "bar11", "bar12"] },
-    { marker: "callableMembers", exact: ["name", "apply", "call", "bind", "toString", "prototype", "length", "arguments", "caller"] },
+    { marker: "callableMembers", exact: ["name", ...completion.functionMembersWithPrototype] },
     { marker: "publicOnlyMembers", exact: ["publicProperty", "publicMethod"] },
 );

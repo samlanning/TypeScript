@@ -14,5 +14,5 @@
 
 verify.completions(
     { marker: "type", exact: "T" },
-    { marker: "value", exact: ["prototype", "m", "apply", "call", "bind", "toString", "length", "arguments", "caller"] },
+    { marker: "value", exact: ["prototype", "m", ...completion.functionMembers] },
 );

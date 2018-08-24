@@ -53,7 +53,7 @@ verify.completions({
     exact: [
         { name: "test1", text: "(property) test1: a1.connectModule\n(res: any, req: any, next: any) => void" },
         { name: "test2", text: "(method) test2(): a1.connectModule" },
-        "apply", "call", "bind", "toString", "prototype", "length", "arguments", "caller",
+        ...completion.functionMembersWithPrototype,
     ],
 });
 

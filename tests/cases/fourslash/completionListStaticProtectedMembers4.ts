@@ -26,17 +26,7 @@
 ////}
 //// Derived./*2*/
 
-const publicCompletions: ReadonlyArray<string> = [
-    "publicMethod",
-    "publicProperty",
-    "apply",
-    "call",
-    "bind",
-    "toString",
-    "length",
-    "arguments",
-    "caller"
-];
+const publicCompletions: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntry> = ["publicMethod", "publicProperty", ...completion.functionMembers];
 
 verify.completions(
     {

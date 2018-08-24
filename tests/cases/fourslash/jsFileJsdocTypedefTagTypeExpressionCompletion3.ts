@@ -30,9 +30,8 @@
 ////x1./*valueMemberOfFooInstance*/;
 ////Foo./*valueMemberOfFoo*/;
 
-const kind = (names: ReadonlyArray<string>, kind: string): ReadonlyArray<FourSlashInterface.ExpectedCompletionEntry> =>
-    names.map(name => ({ name, kind }));
-const warnings = (names: ReadonlyArray<string>): ReadonlyArray<FourSlashInterface.ExpectedCompletionEntry> => kind(names, "warning");
+const warnings = (names: ReadonlyArray<string>): ReadonlyArray<FourSlashInterface.ExpectedCompletionEntry> =>
+    names.map(name => ({ name, kind: "warning" }));
 
 verify.completions(
     {
@@ -86,8 +85,7 @@ verify.completions(
         exact: [
             { name: "prototype", kind: "property" },
             { name: "method1", kind: "method" },
-            ...kind(["apply", "call", "bind", "toString"], "method"),
-            ...kind(["length", "arguments", "caller"], "property"),
+            ...completion.functionMembers,
             ...warnings(["Foo", "value", "property1", "method3", "method4", "foo", "age", "Namespace", "SomeType", "x", "x1"]),
         ],
     },

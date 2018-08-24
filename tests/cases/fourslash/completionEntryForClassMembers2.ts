@@ -207,14 +207,12 @@ const publicPropertiesOfBaseClassB0: ReadonlyArray<FourSlashInterface.ExpectedCo
     { name: "getValue1", text: "(method) B0.getValue1(): string | boolean" },
 ];
 const validInstanceMembersOfBaseClassB0: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObject> = protectedPropertiesOfBaseClassB0.concat(publicPropertiesOfBaseClassB0);
-//TODO:NEATER
 const validInstanceMembersOfBaseClassB0_2 : ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObject> = [
     protectedPropertiesOfBaseClassB0[0],
     publicPropertiesOfBaseClassB0[0],
     protectedPropertiesOfBaseClassB0[1],
     publicPropertiesOfBaseClassB0[1],
 ];
-
 const validStaticMembersOfBaseClassB0: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObject> = [
     { name: "staticMethod", text: "(method) B0.staticMethod(): void" },
     { name: "staticMethod1", text: "(method) B0.staticMethod1(): void" },
@@ -240,7 +238,6 @@ const membersOfI4: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObjec
 const membersOfI5: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObject> = publicPropertiesOfBaseClassB0.concat([
     { name: "methodOfInterface5", text: "(method) I5.methodOfInterface5(): number" },
 ]);
-//TODO:NEATER
 const membersOfJustI5: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObject> = [
     { name: "methodOfInterface5", text: "(method) I5.methodOfInterface5(): number" },
 ];
@@ -252,7 +249,6 @@ const membersOfI7: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObjec
     { name: "methodOfInterface7", text: "(method) I7.methodOfInterface7(): number" },
     ...membersOfI,
 ];
-//TODO:NEATER
 const membersOfI7_2: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntryObject> = [
     ...membersOfI,
     { name: "methodOfInterface7", text: "(method) I7.methodOfInterface7(): number" },
@@ -362,7 +358,6 @@ const tests: ReadonlyArray<{ readonly marker: string | ReadonlyArray<string>, re
     // members of B0 and I5 that extends B0
     {
         marker: "extendsB0AndImplementsI5ThatExtendsB0",
-        //TODO:NEATER
         members: [
             protectedPropertiesOfBaseClassB0[0],
             membersOfI5[0],
@@ -374,7 +369,6 @@ const tests: ReadonlyArray<{ readonly marker: string | ReadonlyArray<string>, re
     // members of B0 and I6 that extends B0
     {
         marker: "extendsB0AndImplementsI6ThatExtendsB0AndHasStaticMethodOfB0",
-        //TODO:NEATER
         members: [
             protectedPropertiesOfBaseClassB0[0],
             membersOfI6[0],
@@ -407,5 +401,3 @@ verify.completions(...tests.map(({ marker, members }): FourSlashInterface.Comple
     exact: [...members.map(m => ({ ...m, kind: "method" })), ...completion.classElementKeywords],
     isNewIdentifierLocation: true,
 })));
-
-throw new Error("See TODO:NEATER");

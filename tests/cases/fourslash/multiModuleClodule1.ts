@@ -21,7 +21,7 @@
 
 verify.completions(
     { marker: "1", includes: "C" },
-    { marker: ["2", "4"], exact: ["prototype", "boo", "x", "foo", "apply", "call", "bind", "toString", "length", "arguments", "caller"] },
+    { marker: ["2", "4"], exact: ["prototype", "boo", "x", "foo", ...completion.functionMembers] },
     { marker: "3", exact: ["foo", "bar"] },
 );
 verify.noErrors();

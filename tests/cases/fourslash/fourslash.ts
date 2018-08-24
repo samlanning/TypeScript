@@ -650,8 +650,11 @@ declare var format: FourSlashInterface.format;
 declare var cancellation: FourSlashInterface.cancellation;
 declare var classification: typeof FourSlashInterface.classification;
 declare namespace completion {
+    export const keywordsWithUndefined: ReadonlyArray<string>;
     export const keywords: ReadonlyArray<string>;
     export const typeKeywords: ReadonlyArray<string>;
     export const classElementKeywords: ReadonlyArray<string>;
     export const constructorParameterKeywords: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntry>;
+    export const functionMembers: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntry>;
+    export const functionMembersWithPrototype: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntry>;
 }

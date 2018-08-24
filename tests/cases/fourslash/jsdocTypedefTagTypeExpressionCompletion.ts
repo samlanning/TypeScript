@@ -72,7 +72,7 @@ verify.completions(
         exact: [
             "prototype",
             { name: "method1", kind: "method" },
-            "apply", "call", "bind", "toString", "length", "arguments", "caller",
+            ...completion.functionMembers,
         ],
     },
     {

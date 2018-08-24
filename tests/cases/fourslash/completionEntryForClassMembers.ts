@@ -121,27 +121,19 @@
 ////}
 
 const getValue: FourSlashInterface.ExpectedCompletionEntry = { name: "getValue", text: "(method) B.getValue(): number" };
-const getValue1: FourSlashInterface.ExpectedCompletionEntry = { name: "getValue1", text: "(method) D1.getValue1(): number" };
 const protectedMethod: FourSlashInterface.ExpectedCompletionEntry = { name: "protectedMethod", text: "(method) B.protectedMethod(): void" };
-const protectedMethodD2: FourSlashInterface.ExpectedCompletionEntry = { name: "protectedMethod", text: "(method) D2.protectedMethod(): void" };
-const privateMethod: FourSlashInterface.ExpectedCompletionEntry = { name: "privateMethod", text: "(method) B.privateMethod(): void" };
 const staticMethod: FourSlashInterface.ExpectedCompletionEntry = { name: "staticMethod", text: "(method) B.staticMethod(): void" };
-const allMembers: ReadonlyArray<FourSlashInterface.ExpectedCompletionEntry> = [getValue, getValue1, protectedMethod, privateMethod, staticMethod];
-const allMemberNames: ReadonlyArray<string> = ["getValue", "getValue1", "protectedMethod", "privateMethod", "staticMethod"];
-
-function includeExclude(...included: string[]): Pick<FourSlashInterface.CompletionsOptions, "includes" | "excludes"> {
-    ts.Debug.assert(included.every(i => allMemberNames.includes(i)));
-    return {
-        includes: allMembers.filter(m => included.includes(typeof m === "string" ? m : m.name)),
-        excludes: allMemberNames.filter(m => !included.includes(m)),
-    }
-}
 
 verify.completions(
     {
         // Not a class element declaration location
         marker: "InsideMethod",
-        excludes: allMemberNames,
+        exact: [
+            "arguments",
+            "B", "C", "D", "D1", "D2", "D3", "D4", "D5", "D6", "E", "F", "F2", "G", "G2", "H", "I", "J", "K", "L", "L2", "M", "N", "O",
+            "undefined",
+            ...completion.keywordsWithUndefined.filter(k => k === "async" || !completion.classElementKeywords.includes(k)),
+        ],
     },
     {
         // Only keywords allowed at this position since they dont extend the class or are private
@@ -181,13 +173,13 @@ verify.completions(
             "classThatHasWrittenAsyncKeyword",
             "classElementAfterConstructorSeparatedByComma",
         ],
-        ...includeExclude("getValue", "protectedMethod"),
+        exact: [protectedMethod, getValue, ...completion.classElementKeywords],
         isNewIdentifierLocation: true,
     },
     {
         // Static Base members and class member keywords allowed
         marker: ["classElementContainingStatic", "classThatStartedWritingIdentifierAfterStaticModifier"],
-        ...includeExclude("staticMethod"),
+        exact: [staticMethod, ...completion.classElementKeywords],
         isNewIdentifierLocation: true,
     },
     {
@@ -195,7 +187,7 @@ verify.completions(
             "classThatHasAlreadyImplementedAnotherClassMethod",
             "classThatHasAlreadyImplementedAnotherClassMethodAfterMethod",
         ],
-        ...includeExclude("protectedMethod"),
+        exact: [protectedMethod, ...completion.classElementKeywords],
         isNewIdentifierLocation: true,
     },
     {
@@ -203,21 +195,23 @@ verify.completions(
             "classThatHasAlreadyImplementedAnotherClassProtectedMethod",
             "classThatHasDifferentMethodThanBaseAfterProtectedMethod",
         ],
-        ...includeExclude("getValue"),
+        exact: [getValue, ...completion.classElementKeywords],
         isNewIdentifierLocation: true,
     },
     {
         // instance memebers in D1 and base class are shown
         marker: "classThatExtendsClassExtendingAnotherClass",
-        ...includeExclude("getValue", "protectedMethod", "getValue1"),
+        exact: ["getValue1", "protectedMethod", "getValue", ...completion.classElementKeywords],
         isNewIdentifierLocation: true,
     },
     {
         // instance memebers in D2 and base class are shown
-        TODO: DO THIS BETTER
         marker: "classThatExtendsClassExtendingAnotherClassWithOverridingMember",
-        includes: [getValue, protectedMethodD2],
-        excludes: ["privateMethod", "staticMethod"],
+        exact: [
+            { name: "protectedMethod", text: "(method) D2.protectedMethod(): void" },
+            getValue,
+            ...completion.classElementKeywords,
+        ],
         isNewIdentifierLocation: true,
     },
     {
@@ -226,7 +220,7 @@ verify.completions(
             "classThatExtendsClassExtendingAnotherClassAndTypesStatic",
             "classThatExtendsClassExtendingAnotherClassWithOverridingMemberAndTypesStatic"
         ],
-        ...includeExclude("staticMethod"),
+        exact: [staticMethod, ...completion.classElementKeywords],
         isNewIdentifierLocation: true,
-    }
+    },
 );

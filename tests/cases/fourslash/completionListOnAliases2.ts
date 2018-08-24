@@ -39,7 +39,7 @@ verify.completions(
     { marker: ["1", "7"], exact: ["F", "C", "E", "N", "V", "A"] },
     { marker: ["1Type", "7Type"], exact: ["I", "C", "E", "A"] },
     // Class C
-    { marker: "2", exact: ["prototype", "property", "apply", "call", "bind", "toString", "length", "arguments", "caller"] },
+    { marker: "2", exact: ["prototype", "property", ...completion.functionMembers] },
     // Enum E
     { marker: "3", exact: "value" },
     // Module N

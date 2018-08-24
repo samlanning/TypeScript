@@ -19,5 +19,5 @@
 
 verify.completions({
     marker: "",
-    exact: ["getName", "getNa", "apply", "call", "bind", "toString", "prototype", "length", "arguments", "caller", "Person", "name", "age"],
+    exact: ["getName", "getNa", ...completion.functionMembersWithPrototype, "Person", "name", "age"],
 });

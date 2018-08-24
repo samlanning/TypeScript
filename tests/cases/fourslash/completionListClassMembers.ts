@@ -23,17 +23,10 @@
 ////var c = new Class();
 ////c./*instanceMembersOutsideClassScope*/privateProperty;
 
-
-goTo.marker("staticsInsideClassScope");
-verify.completionListContains("privateStaticProperty");
-verify.completionListContains("privateStaticMethod");
-verify.completionListContains("publicStaticProperty");
-verify.completionListContains("publicStaticMethod");
-// No instance properties
-verify.not.completionListContains("privateProperty");
-verify.not.completionListContains("privateInstanceMethod");
-// constructors should have a 'prototype' member
-verify.completionListContains("prototype");
+verify.completions({
+    marker: "staticsInsideClassScope",
+    exact: ["prototype", "privateStaticProperty", "publicStaticProperty", "privateStaticMethod", "publicStaticMethod", ...completion.functionMembers],
+});
 
 goTo.marker("instanceMembersInsideClassScope");
 verify.completionListContains("privateProperty");

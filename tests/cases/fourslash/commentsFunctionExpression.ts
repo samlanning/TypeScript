@@ -83,7 +83,7 @@ verify.quickInfos({
 
 verify.completions({
     marker: "15",
-    includes: { name: "s", text: "(parameter) s: string", documentation: "On parameter \nparam on expression\nthe first parameter!" },
+    includes: { name: "s", text: "(parameter) s: string", documentation: "On parameter\nparam on expression\nthe first parameter!" },
 });
 verify.quickInfoAt("16", "var assigned: (s: string) => number", "Summary on expression\nOn variable");
 verify.completions({

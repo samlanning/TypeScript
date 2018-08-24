@@ -26,16 +26,6 @@
 ////    }
 ////}
 
-const fnCompletions: ReadonlyArray<string> = [
-    "apply",
-    "call",
-    "bind",
-    "toString",
-    "length",
-    "arguments",
-    "caller",
-];
-
 verify.completions(
     {
         // Same class, everything is visible
@@ -48,7 +38,7 @@ verify.completions(
             "publicProperty",
             "protectedOverriddenMethod",
             "protectedOverriddenProperty",
-            ...fnCompletions,
+            ...completion.functionMembers,
         ],
     },
     {
@@ -62,7 +52,7 @@ verify.completions(
             "protectedProperty",
             "publicMethod",
             "publicProperty",
-            ...fnCompletions,
+            ...completion.functionMembers,
         ],
     },
     {

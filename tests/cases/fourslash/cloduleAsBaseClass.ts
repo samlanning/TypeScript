@@ -25,9 +25,6 @@
 
 verify.completions({ marker: "1", exact: ["foo2", "foo"] });
 edit.insert('foo()');
-verify.completions({
-    marker: "2",
-    exact: ["prototype", "bar2", "bar", "baz", "x", "apply", "call", "bind", "toString", "length", "arguments", "caller"],
-});
+verify.completions({ marker: "2", exact: ["prototype", "bar2", "bar", "baz", "x", ...completion.functionMembers] });
 edit.insert('bar()');
 verify.noErrors();

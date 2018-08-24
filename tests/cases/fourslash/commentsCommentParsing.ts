@@ -469,7 +469,7 @@ verify.completions({
     marker: "44",
     includes: [
         { name: "jsDocParamTest", text: "function jsDocParamTest(a: number, b: number, c: number, d: number): number", documentation: jsdocTestDocComment },
-        { name: "x", text: "var x: any", documentation: "This is a comment " },
+        { name: "x", text: "var x: any", documentation: "This is a comment" },
         { name: "y", text: "var y: any", documentation: "This is a comment" },
     ],
 });

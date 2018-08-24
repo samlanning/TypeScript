@@ -15,4 +15,4 @@
 ////var _ : SomeInterface;
 ////_./**/
 
-verify.completions({ marker: "", exact: ["apply", "call", "bind", "toString", "prototype", "length", "arguments", "caller"] });
+verify.completions({ marker: "", exact: completion.functionMembersWithPrototype });

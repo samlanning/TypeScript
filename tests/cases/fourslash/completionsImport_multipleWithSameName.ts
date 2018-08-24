@@ -1,6 +1,7 @@
 /// <reference path="fourslash.ts" />
 
 // @module: esnext
+// @noLib: true
 
 // @Filename: /global.d.ts
 // A local variable would prevent import completions (see `completionsImport_shadowedByLocal.ts`), but a global doesn't.
@@ -18,10 +19,12 @@
 goTo.marker("");
 verify.completions({
     marker: "",
-    includes: [
+    exact: [
         { name: "foo", text: "var foo: number", kind: "var" },
+        "undefined",
         { name: "foo", source: "/a", sourceDisplay: "./a", text: "const foo: 0", kind: "const", hasAction: true },
         { name: "foo", source: "/b", sourceDisplay: "./b", text: "const foo: 1", kind: "const", hasAction: true },
+        ...completion.keywords,
     ],
     preferences: { includeCompletionsForModuleExports: true },
 });

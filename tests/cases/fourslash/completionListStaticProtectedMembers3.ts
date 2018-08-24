@@ -25,5 +25,5 @@
 // Only public properties are visible outside the class
 verify.completions({
     marker: ["1", "2"],
-    exact: ["prototype", "publicMethod", "publicProperty", "apply", "call", "bind", "toString", "length", "arguments", "caller"],
+    exact: ["prototype", "publicMethod", "publicProperty", ...completion.functionMembers],
 });
