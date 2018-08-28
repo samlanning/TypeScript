@@ -4,9 +4,6 @@
 //// type B<T extends A> = {};
 //// type C = B<'fooooo' | '/**/'>
 
-
-goTo.marker();
-verify.completionListContains("fooooo");
-verify.completionListContains("barrrrr");
+verify.completions({ marker: "", exact: ["fooooo", "barrrrr"] });
 edit.insert("b");
-verify.completionListContains("barrrrr");
+verify.completions({ exact: ["fooooo", "barrrrr"] });
